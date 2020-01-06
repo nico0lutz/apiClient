@@ -15,8 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', 'ApiLoginController@login');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/apiLogin', 'ApiLoginController@login');
 
 Route::get('/callback', 'ApiLoginController@convertToAccessToken');
 
 Route::get('/test', 'ApiController@getCurrUser');
+
+Route::get('/posts', 'ApiController@posts');
