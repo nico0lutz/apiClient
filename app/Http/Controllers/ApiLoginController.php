@@ -49,8 +49,10 @@ class ApiLoginController extends Controller
         
         $body = json_decode((string) $response->getBody(), true);
         $access_token = $body['access_token'];
-        
-        Storage::put('access_token.txt', $access_token);
+
+        session(['access_token' => $access_token]);
+
+        return redirect(url('posts'));
 
     }
 }

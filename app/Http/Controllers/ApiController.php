@@ -26,7 +26,7 @@ class ApiController extends Controller
     function posts(Request $request)
     {
         $client = new Client;
-        $accessToken = Storage::get('access_token.txt');
+        $accessToken = session('access_token');
 
         $response = $client->request('GET', 'http://localhost:8000/api/posts', [
             'headers' => [
@@ -37,4 +37,5 @@ class ApiController extends Controller
 
         return json_decode($response->getBody(), true);
     }
+
 }
