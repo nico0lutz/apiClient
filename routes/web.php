@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,12 @@ Route::get('/apiLogin', 'ApiLoginController@login');
 
 Route::get('/callback', 'ApiLoginController@convertToAccessToken');
 
-Route::get('/test', 'ApiController@getCurrUser');
-
 Route::get('/posts', 'ApiController@posts');
+
+Route::post('/addPost', 'ApiController@addPost');
+
+Route::get('/deletePost/{id}', 'ApiController@deletePost');
+
+Route::get('/profile', 'ProfileController@index');
+
+Route::get('/getCurrUser', 'ApiController@getCurrUser');
