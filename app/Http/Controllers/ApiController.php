@@ -78,6 +78,25 @@ class ApiController extends Controller
         return redirect('profile');
     }
 
+    function editPost(Request $request)
+    {
+        $client = new Client;
+        //$accessToken = session('access_token');
+        $accessToken = Storage::get('access_token');
+        $params = ['id' => $request->id, 'title' => $request->title, 'content' => $request->content];
+
+        $response = $client->request('PUT', 'http://localhost:8000/api/editPost', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '.$accessToken,
+            ],
+            'form_params' => $params,
+        ]);
+
+        // return json_decode((string) $response->getBody(), true);
+        return redirect('profile');
+    }
+
     function deletePost(Request $request, $id)
     {
         $client = new Client;

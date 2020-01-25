@@ -26,13 +26,11 @@
         <h2>Create Post</h2>
     </div>
     <div class="form">
-        <form action="addPost" method="POST">
+        <form action="{{ url('addPost') }}" method="POST">
             @csrf
-            <input name="title" type="text"><br>
-            
-            <textarea name="content" cols="80" rows="10">
+            <input name="title" type="text" placeholder="Title"><br>
+            <textarea name="content" cols="80" rows="10" placeholder="Content">
             </textarea><br>
-
             <input type="submit" value="Add Post">
         </form>
     
@@ -51,6 +49,7 @@
                 <p>{{ $p['content'] }}</p>
                 <p>{{ $p['created_at'] }}</p>
                 <a href="deletePost/{{ $p['id'] }}">Delete</a>
+                <a href="editPost/{{ $p['id'] }}/{{ $p['title'] }}/{{ $p['content'] }}">Edit</a>
             </td>
             </tr>
         @endforeach

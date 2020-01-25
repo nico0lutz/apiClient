@@ -7,6 +7,8 @@ use Str;
 use InvalidArgumentException;
 use GuzzleHttp\Client;
 use Storage;
+use App\User;
+use Auth;
 
 
 class ApiLoginController extends Controller
@@ -51,10 +53,45 @@ class ApiLoginController extends Controller
         $accessToken = $body['access_token'];
 
         //session(['access_token' => $access_token]);
-
         Storage::put('access_token', $accessToken);
 
-        return redirect(url('posts'));
+        $this->loginApiUser();
 
+        return redirect()->to('profile');
+    }
+
+
+    function loginApiUser()
+    {
+        $client = new Client;
+        //$accessToken = session('access_token');
+        $accessToken = Storage::get('access_token');
+
+        $response = $client->request('GET', 'http://localhost:8000/api/user', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '.$accessToken,
+            ]
+        ]);
+        
+        $conv_response= json_decode($response->getBody(), true);
+        $name = $conv_response['name'];
+        $email = $conv_response['email'];
+        
+        $userExist = User::where('email', $email)->first();
+
+        if($userExist) {
+            Auth::loginUsingId($userExist->id);
+        }else {
+            $user = new User;
+
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = md5(rand(1,10000));
+
+            $user->save();
+
+            Auth::loginUsingId($user->id);
+        }
     }
 }

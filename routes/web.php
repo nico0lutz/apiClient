@@ -31,6 +31,17 @@ Route::post('/addPost', 'ApiController@addPost');
 
 Route::get('/deletePost/{id}', 'ApiController@deletePost');
 
+Route::get('/editPost/{id}/{title}/{content}', function($id, $title, $content) {
+    return view('editPost', ['id' => $id, 'title' => $title, 'content' => $content]);
+});
+
+Route::post('/editPost', 'ApiController@editPost');
+
 Route::get('/profile', 'ProfileController@index');
 
 Route::get('/getCurrUser', 'ApiController@getCurrUser');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::view('/test', 'test');
