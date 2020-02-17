@@ -13,6 +13,10 @@ use App\Http\Controllers\ApiController;
 |
 */
 
+
+/**
+ * Standard routes
+ */
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,11 +25,20 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+/**
+ * Log in routes
+ */
 Route::get('/apiLogin', 'ApiLoginController@login');
 
 Route::get('/callback', 'ApiLoginController@convertToAccessToken');
 
-Route::get('/posts', 'ApiController@posts');
+
+/**
+ * Post manipulation routes
+ */
+Route::get('/feed', 'FeedController@index')->middleware('auth');
+
+Route::get('/myPosts', 'MyPostsController@index')->middleware('auth');
 
 Route::post('/addPost', 'ApiController@addPost');
 
@@ -37,11 +50,13 @@ Route::get('/editPost/{id}/{title}/{content}', function($id, $title, $content) {
 
 Route::post('/editPost', 'ApiController@editPost');
 
-Route::get('/profile', 'ProfileController@index');
 
+/**
+ * dashboard routes
+ */
 Route::get('/getCurrUser', 'ApiController@getCurrUser');
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashboardController@index')->middleware('auth');
 
-Route::view('/test', 'test');
+
+

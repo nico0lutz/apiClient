@@ -6,8 +6,16 @@ use Storage;
 
 use Illuminate\Http\Request;
 
-class ProfileController extends Controller
-{
+class MyPostsController extends Controller
+{   
+    /**
+     * Pulls all posts owned by the current user 
+     * from an API and redirects to the myPosts view
+     * in order to display them
+     * 
+     * @param Request
+     * @return void
+     */
     function index (Request $request)
     {
         $client = new Client;
@@ -22,6 +30,6 @@ class ProfileController extends Controller
         ]);
 
         $myPosts = json_decode($response->getBody(), true);
-        return view('profile', ['myPosts' => $myPosts]);
+        return view('myPosts', ['myPosts' => $myPosts]);
     }
 }

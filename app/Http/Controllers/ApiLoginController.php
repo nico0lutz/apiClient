@@ -10,9 +10,20 @@ use Storage;
 use App\User;
 use Auth;
 
-
+/**
+ * Handles all of the log in workflow via an API.
+ * 
+ */
 class ApiLoginController extends Controller
-{
+{   
+    /**
+     * Loggs in a user via API, if registered.
+     * Uses the client ID of this application.
+     * There will be a callback from the API.
+     * 
+     * @return void
+     * 
+     */
     function login(Request $request)
     {
         $request->session()->put('state', $state = Str::random(40));
@@ -28,15 +39,17 @@ class ApiLoginController extends Controller
         return redirect('http://localhost:8000/oauth/authorize?'.$query);
     }
 
+    /**
+     * Is called, when an API sends back the access token via a callback.
+     * Saves the access token in the session.
+     * Redirects to the useres dashboard.
+     * 
+     * @param Request
+     * @return void
+     * 
+     */
     function convertToAccessToken(Request $request)
     {
-        $state = $request->session()->pull('state');
-
-        /*throw_unless(
-            strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
-        );*/
-
         $http = new Client;
 
         $response = $http->post('http://localhost:8000/oauth/token', [
@@ -52,20 +65,24 @@ class ApiLoginController extends Controller
         $body = json_decode((string) $response->getBody(), true);
         $accessToken = $body['access_token'];
 
-        //session(['access_token' => $access_token]);
-        Storage::put('access_token', $accessToken);
-
+        session()->put('access_token', $accessToken);
+        
         $this->loginApiUser();
 
-        return redirect()->to('profile');
+        return redirect()->to('dashboard');
     }
 
-
+    /**
+     * Helper method for logging in a user in this application,
+     * since authorizing via API will not automatically log in a user here
+     * 
+     * @return void
+     * 
+     */
     function loginApiUser()
     {
         $client = new Client;
-        //$accessToken = session('access_token');
-        $accessToken = Storage::get('access_token');
+        $accessToken = session('access_token');
 
         $response = $client->request('GET', 'http://localhost:8000/api/user', [
             'headers' => [
