@@ -28,8 +28,8 @@
     <div class="form">
         <form action="{{ url('addPost') }}" method="POST">
             @csrf
-            <input name="title" type="text" placeholder="Title"><br>
-            <textarea name="content" cols="80" rows="10" placeholder="Content">
+            <input name="title" type="text" placeholder="Title" required><br>
+            <textarea name="content" cols="80" rows="10" placeholder="Content" required>
             </textarea><br>
             <input type="submit" value="Add Post">
         </form>
