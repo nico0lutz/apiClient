@@ -29,7 +29,7 @@ class ApiLoginController extends Controller
         $request->session()->put('state', $state = Str::random(40));
 
         $query = http_build_query([
-            'client_id' => 12,
+            'client_id' => 13,
             'redirect_uri' => 'http://localhost:8001/callback',
             'response_type' => 'code',
             'scope' => '',
@@ -55,8 +55,8 @@ class ApiLoginController extends Controller
         $response = $http->post('http://localhost:8000/oauth/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'client_id' => '12',
-                'client_secret' => 'iVI7tpdiLYKUCijhbh9mm69M3g2cmwtaClH1Prxt',
+                'client_id' => '13',
+                'client_secret' => '7MEUafRdRz2EK7PTrrexgzYV2dOCaVt4LAtaLV2O',
                 'redirect_uri' => 'http://localhost:8001/callback',
                 'code' => $request->code,
             ],

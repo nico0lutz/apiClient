@@ -19,8 +19,7 @@ class MyPostsController extends Controller
     function index (Request $request)
     {
         $client = new Client;
-        //$accessToken = session('access_token');
-        $accessToken = Storage::get('access_token');
+        $accessToken = session('access_token');
 
         $response = $client->request('GET', 'http://localhost:8000/api/myPosts', [
             'headers' => [
